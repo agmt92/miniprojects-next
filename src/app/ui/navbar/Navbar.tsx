@@ -57,7 +57,7 @@ export default function Navbar() {
   return (
     <NavStyle className={`navbar bg-primary text-light ${showElement.navOpen && "showNavbar"}`}>
         <div className="navbar-logo">
-            <a href='https://www.mtag.me' className='navbar-brand'>MTAG.me</a>
+            <a href='/' className='navbar-brand'>Back</a>
             {/* open and close icons */}
             { showElement.hamburgerIcon && <AiOutlineMenu onClick={toggleNav}/>}{" "}
             { showElement.closeIcon && <AiOutlineClose onClick={closeNav}/>}
