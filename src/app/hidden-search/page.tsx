@@ -4,8 +4,6 @@ import { useState, useEffect, CSSProperties, useRef } from 'react';
 import { BsSearch } from 'react-icons/bs';
 
 export default function HiddenSearch() {
-    let body = document.body.style;
-
     const [uiProps, setUiProps] = useState({
         bgColor: 'purple',
         shadow: '',
@@ -43,13 +41,15 @@ export default function HiddenSearch() {
     const inputElement = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        body.background = uiProps.bgColor;
-        body.boxShadow = uiProps.shadow;
-        body.transition = uiProps.transition;
+        if (typeof document !== "undefined") {
+            const body = document.body.style;
+            body.background = uiProps.bgColor;
+            body.boxShadow = uiProps.shadow;
+            body.transition = uiProps.transition;
+        }
         if (uiProps.showSearchBar && inputElement.current) {
             inputElement.current.focus();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [uiProps]);
 
     const showSearch = () => {
