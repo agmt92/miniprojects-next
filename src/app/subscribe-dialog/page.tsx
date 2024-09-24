@@ -1,11 +1,10 @@
 "use client";
-
-import { useState, useEffect, CSSProperties } from "react";
-import Button from "../ui/components/Button";
+import React, { useState, useEffect, CSSProperties } from "react";
 import { BsFillEmojiFrownFill, BsFillEmojiSmileFill } from "react-icons/bs";
+import Button from "../ui/components/Button";
 import "./Bounce.css";
 
-export default function DialogBox({ width = 350 }) {
+const SubscribeDialog: React.FC<{ width?: number }> = ({ width = 350 }) => {
   const [subscribe, setSubscribe] = useState({
     title: "Hey!",
     text: "Subscribe to us",
@@ -32,30 +31,34 @@ export default function DialogBox({ width = 350 }) {
   };
 
   const [icon, setIcon] = useState<JSX.Element | null>(null);
-  const iconStyle: CSSProperties = {
-    fontSize: "80px",
-    justifySelf: "center",
-    color: subscribe.state ? "rgba(59,137,90,0.4)" : "rgba(25,118,160,0.4)",
-  };
 
   useEffect(() => {
-    if (subscribe.state) {
-      setIcon(<BsFillEmojiSmileFill style={iconStyle} />);
-      document.body.style.background = "rgba(59,137,90,0.4)";
-    } else {
-      setIcon(<BsFillEmojiFrownFill style={iconStyle} />);
-      document.body.style.background = "rgba(25,118,160,0.4)";
+    if (typeof window !== "undefined") {
+      const iconStyle: CSSProperties = {
+        fontSize: "80px",
+        justifySelf: "center",
+        color: subscribe.state ? "rgba(59,137,90,0.4)" : "rgba(25,118,160,0.4)",
+      };
+      if (subscribe.state) {
+        setIcon(<BsFillEmojiSmileFill style={iconStyle} />);
+        document.body.style.background = "rgba(59,137,90,0.4)";
+      } else {
+        setIcon(<BsFillEmojiFrownFill style={iconStyle} />);
+        document.body.style.background = "rgba(25,118,160,0.4)";
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscribe.state]);
 
   const [bounce, setBounce] = useState("");
 
   useEffect(() => {
-    setTimeout(() => {
-      setBounce("");
-    }, 500);
-    return () => setBounce("bounce");
+    if (typeof window !== "undefined") {
+      const timer = setTimeout(() => {
+        setBounce("");
+      }, 500);
+      setBounce("bounce");
+      return () => clearTimeout(timer);
+    }
   }, [subscribe.state]);
 
   return (
@@ -96,4 +99,10 @@ export default function DialogBox({ width = 350 }) {
       </div>
     </div>
   );
-}
+};
+
+const Page = () => {
+  return <SubscribeDialog width={350} />;
+};
+
+export default Page;
